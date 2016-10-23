@@ -1,0 +1,64 @@
+<script src="/bower_components/webcamjs/webcam.js"></script>
+
+<style type="text/css">
+    
+.ingrid {
+    width: 50%;
+    height: 50%;
+    float: left;
+}
+</style>
+
+<div id="my_camera" style="width:320px; height:240px;display: none"></div>
+<div id="my_result"></div>
+
+<div style="width:480px;height:480px;">
+<div class="ingrid" id="my_result1"></div>
+<div class="ingrid" id="my_result2"></div>
+<div class="ingrid" id="my_result3"></div>
+<div class="ingrid" id="my_result4"></div>
+</div>
+
+<script language="JavaScript">
+
+    Webcam.set({
+        width: 320,
+        height: 240,
+        dest_width: 320,
+        dest_height: 240,
+        crop_width: 240,
+        crop_height: 240,
+        image_format: 'jpeg',
+        jpeg_quality: 90,
+        force_flash: false
+    });
+    Webcam.attach( '#my_camera' );
+    
+    function take_snapshot(id) {
+        var divId = id || 'my_result';
+        Webcam.snap(function (data_uri) {
+            document.getElementById(divId).innerHTML = '<img src="'+data_uri+'"/>';
+        } );
+    }
+
+    function start() {
+        
+        take_snapshot('my_result1');
+
+        setTimeout(function () {
+            take_snapshot('my_result2');
+        }, 1000);
+
+        setTimeout(function () {
+            take_snapshot('my_result3');
+        }, 2000);
+
+        setTimeout(function () {
+            take_snapshot('my_result4');
+        }, 3000);
+
+    };
+
+</script>
+
+<a href="javascript:void(start())">Start</a>
