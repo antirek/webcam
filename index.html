@@ -1,5 +1,5 @@
 <script src="/bower_components/webcamjs/webcam.js"></script>
-
+<script src="/bower_components/caman/dist/caman.full.js"></script>
 <style type="text/css">
     
 .ingrid {
@@ -21,6 +21,10 @@
 
 <script language="JavaScript">
 
+    var shutter = new Audio();
+        shutter.autoplay = false;
+        shutter.src = navigator.userAgent.match(/Firefox/) ? 'shutter.ogg' : 'shutter.mp3';
+
     Webcam.set({
         width: 320,
         height: 240,
@@ -34,12 +38,26 @@
     });
     Webcam.attach( '#my_camera' );
     
+
     function take_snapshot(id) {
         var divId = id || 'my_result';
+
+        shutter.play();
+
         Webcam.snap(function (data_uri) {
             document.getElementById(divId).innerHTML = '<img src="'+data_uri+'"/>';
         } );
     }
+
+    function caman (id) {
+        Caman('#' + id, function () {
+            this.brightness(10);
+            this.contrast(30);
+            this.sepia(60);
+            this.saturation(-30);
+            this.render();
+        });
+    };
 
     function start() {
         
@@ -47,15 +65,18 @@
 
         setTimeout(function () {
             take_snapshot('my_result2');
-        }, 1000);
-
-        setTimeout(function () {
-            take_snapshot('my_result3');
+            caman('my_result2')
         }, 2000);
 
         setTimeout(function () {
+            take_snapshot('my_result3');
+            caman('my_result3')
+        }, 4000);
+
+        setTimeout(function () {
             take_snapshot('my_result4');
-        }, 3000);
+            caman('my_result4')
+        }, 6000);
 
     };
 
